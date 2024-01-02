@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>API_KEY</key>
+	<string>AIzaSyChfBCMJxQe2ijy-vg6byhh40nFuyDAIjU</string>
+	<key>GCM_SENDER_ID</key>
+	<string>267449378738</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.project2023.RunnerTests</string>
+	<key>PROJECT_ID</key>
+	<string>projectcinemagic</string>
+	<key>STORAGE_BUCKET</key>
+	<string>projectcinemagic.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:267449378738:ios:a85c2e3ece5deabf1526ab</string>
+</dict>
+</plist>
