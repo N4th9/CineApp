@@ -67,7 +67,7 @@ class _IdentityPageState extends State<IdentityPage> {
                 labelText: 'Password',
               ),
             ),
-            const SizedBox(height: 20.0),
+            const SizedBox(height: 150.0),
             ElevatedButton(
               onPressed: () {
                 if (_usernameController.text == 'admin' &&
@@ -97,6 +97,15 @@ class _IdentityPageState extends State<IdentityPage> {
                   );
                 }
               },
+              style: ElevatedButton.styleFrom(
+                foregroundColor: Colors.black,
+                backgroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(32.0),
+                  side: const BorderSide(color: Colors.black),
+                ),
+                padding: const EdgeInsets.symmetric(horizontal: 130.0),
+              ),
               child: const Text("Se connecter"),
             ),
             const SizedBox(height: 20.0),
@@ -112,9 +121,18 @@ class _IdentityPageState extends State<IdentityPage> {
                   ),
                 );
               },
+              style: ElevatedButton.styleFrom(
+                foregroundColor: Colors.black,
+                backgroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(32.0),
+                  side: const BorderSide(color: Colors.black),
+                ),
+                padding: const EdgeInsets.symmetric(horizontal: 150.0),
+              ),
               child: const Text("Annuler"),
             ),
-            const SizedBox(height: 150.0),
+            const SizedBox(height: 20.0),
             Expanded(
               child: Container(
                 margin: const EdgeInsets.all(10.0),
@@ -186,8 +204,8 @@ class _IdentityPageState extends State<IdentityPage> {
                         ),
                       ),
                       child: const Text('My Magic',
-                          style:
-                              TextStyle(color: Colors.purple, fontSize: 16.0)),
+                          style: TextStyle(
+                              color: Colors.deepPurpleAccent, fontSize: 16.0)),
                     ),
                   ],
                 ),
