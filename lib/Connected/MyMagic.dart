@@ -11,12 +11,14 @@ class MyMagicPage extends StatefulWidget {
 }
 
 class _MyMagicPageState extends State<MyMagicPage> {
+  int notificationsCount = 0;
   String? selectedFilm;
   String? selectedFilmType;
   String? selectedConfiserie;
-  int? selectedQuantity;
+  String? selectedQuantity;
   String? selectedComplex;
   DateTime? selectedDate;
+  TimeOfDay? selectedTime;
 
   @override
   Widget build(BuildContext context) {
@@ -26,19 +28,56 @@ class _MyMagicPageState extends State<MyMagicPage> {
         centerTitle: true,
         shadowColor: Colors.transparent,
         actions: [
+          IconButton(onPressed: () {}, icon: const Icon(Icons.notifications)),
           IconButton(
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const MyHomePage(
-                    films: [],
-                    confiseries: [],
-                  ),
+              showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                  title: const Text('Quitter ?'),
+                  content: const Text('Vous serez déconnecté.'),
+                  actions: [
+                    TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const MyHomePage(
+                              films: [],
+                              confiseries: [],
+                            ),
+                          ),
+                        );
+                      },
+                      child: const Text('Se déconnecter'),
+                    ),
+                    TextButton(
+                      onPressed: () => Navigator.of(context).pop(false),
+                      child: const Text('Annuler'),
+                    ),
+                  ],
                 ),
               );
             },
-            icon: const Icon(Icons.dangerous),
+            icon: Stack(
+              children: [
+                const Icon(Icons.dangerous),
+                if (notificationsCount > 0)
+                  Positioned(
+                    top: 0,
+                    right: 0,
+                    child: CircleAvatar(
+                      radius: 8,
+                      backgroundColor: Colors.red,
+                      foregroundColor: Colors.white,
+                      child: Text(
+                        notificationsCount.toString(),
+                        style: TextStyle(fontSize: 12),
+                      ),
+                    ),
+                  ),
+              ],
+            ),
           ),
         ],
       ),
@@ -87,6 +126,26 @@ class _MyMagicPageState extends State<MyMagicPage> {
                 selectedDate != null
                     ? "Date sélectionnée : ${selectedDate!.day}/${selectedDate!.month}/${selectedDate!.year}"
                     : "Sélectionner la date",
+              ),
+            ),
+            const SizedBox(height: 30.0),
+            ElevatedButton(
+              onPressed: () async {
+                final TimeOfDay? pickedTime = await showTimePicker(
+                  context: context,
+                  initialTime: TimeOfDay.now(),
+                );
+
+                if (pickedTime != null && pickedTime != selectedTime) {
+                  setState(() {
+                    selectedTime = pickedTime;
+                  });
+                }
+              },
+              child: Text(
+                selectedTime != null
+                    ? "Heure sélectionnée : ${selectedTime!.format(context)}"
+                    : "Sélectionner l'heure",
               ),
             ),
             const SizedBox(height: 30.0),
@@ -184,7 +243,7 @@ class _MyMagicPageState extends State<MyMagicPage> {
                 ),
                 const SizedBox(width: 10.0),
                 DropdownButton<String>(
-                  value: selectedFilmType,
+                  value: selectedQuantity,
                   hint: const Text('Quantité'),
                   items: ['1', '2'].map((type) {
                     return DropdownMenuItem<String>(
@@ -194,13 +253,13 @@ class _MyMagicPageState extends State<MyMagicPage> {
                   }).toList(),
                   onChanged: (value) {
                     setState(() {
-                      selectedFilmType = value;
+                      selectedQuantity = value;
                     });
                   },
                 ),
               ],
             ),
-            const SizedBox(height: 170.0),
+            const SizedBox(height: 50.0),
             ElevatedButton(
               onPressed: () {
                 if (selectedFilm != null &&
@@ -208,15 +267,21 @@ class _MyMagicPageState extends State<MyMagicPage> {
                     selectedQuantity != null &&
                     selectedComplex != null &&
                     selectedDate != null &&
-                    selectedFilmType != null) {
+                    selectedFilmType != null &&
+                    selectedTime != null) {
                   FirebaseFirestore.instance.collection('commandes').add({
                     'film': selectedFilm,
                     'filmType': selectedFilmType,
                     'confiserie': selectedConfiserie,
                     'quantite': selectedQuantity,
                     'complexe': "Se déroule à $selectedComplex",
-                    'date': "Le $selectedDate",
+                    'date': "Le $selectedDate ${selectedTime!.format(context)}",
                   });
+
+                  setState(() {
+                    notificationsCount++;
+                  });
+
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
                       content: Text("Commande ajoutée"),
@@ -228,6 +293,15 @@ class _MyMagicPageState extends State<MyMagicPage> {
                       builder: (context) => const CommandesPage(),
                     ),
                   );
+                  setState(() {
+                    selectedFilm = null;
+                    selectedFilmType = null;
+                    selectedConfiserie = null;
+                    selectedQuantity = null;
+                    selectedComplex = null;
+                    selectedDate = null;
+                    selectedTime = null;
+                  });
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(

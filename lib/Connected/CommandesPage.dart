@@ -29,7 +29,7 @@ class _CommandesPageState extends State<CommandesPage> {
                 var commande = commandes[index];
                 String titreCommande = "Commande n° ${index + 1}";
                 String titreFilm = commande['film'];
-                int quantite = commande['quantite'];
+                String quantite = commande['quantite'];
                 String confiserie = commande['confiserie'];
 
                 return Dismissible(
